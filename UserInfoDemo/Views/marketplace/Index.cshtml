@@ -1,0 +1,54 @@
+﻿@using ADPClient;
+@{
+    ViewBag.Title = "Home Page";
+    var disabled = "";
+}
+
+
+
+@if ((AuthorizationCodeConnection)Session["AuthorizationCodeConnection"] == null)
+{
+    disabled = "disabled=disabled";
+    <h4><a href="/marketplace/Authorize">Login</a></h4>
+}
+else {
+    <h4><a href="/marketplace/Logout">Logout</a></h4>
+}
+
+@using (Html.BeginForm("getUserInfo", "marketplace", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    <button  @disabled type="submit" class="btn btn-primary" style="display:inline-block;">Get User Info Data <br /> Library</button>@:&nbsp;&nbsp;&nbsp;
+}
+
+<h5>Click on a product button to see results</h5>
+
+
+    <table class="table table-bordered table-hover">
+        <thead>
+            <tr class="success">
+                <th>&nbsp;</th>
+            </tr>
+        </thead>
+
+        <tfoot>
+            @if (ViewBag.IsError == true)
+            {
+                <tr>
+                    <td colspan="6">
+                        <div class="alert alert-danger" role="alert">An error occurred while retrieving data from the server. Please try again.<p>@ViewBag.Message</p></div>
+                    </td>
+                </tr>
+            }
+            else
+            {
+                <tr>
+                    <td colspan="6">
+                        <div class="alert alert-info" role="alert"><p>@ViewBag.Message</p></div>
+                    </td>
+                </tr>
+            }
+        </tfoot>
+
+        <tbody>
+        </tbody>
+    </table>
