@@ -32,10 +32,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="ADP-API-Client, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\ADP-API-Library-Core.1.0\lib\net45\ADP-API-Client.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="adp-connection-NET, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\ADP-library-connection-NET.1.0\lib\net45\adp-connection-NET.dll</HintPath>
       <Private>True</Private>
