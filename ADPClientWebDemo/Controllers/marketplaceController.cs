@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Web.Mvc;
 using ADPClient;
-using ADPClient.Product;
 using ADPClient.Product.dto;
+using ADPClient.Product;
 
 namespace UserInfoDemo
 {
@@ -18,7 +18,7 @@ namespace UserInfoDemo
         /// 
         /// </summary>
         /// <returns></returns>
-        public ActionResult Authorize()
+        public RedirectResult Authorize()
         {
 
             String authorizationurl = null;
@@ -62,11 +62,44 @@ namespace UserInfoDemo
                     ViewBag.isError = true;
                     ViewBag.Message = e.Message;
                     Console.WriteLine(ViewBag.Message);
-                    return View("Index");
+                    return Redirect("marketplace");
                 }
             }
 
             return Redirect(authorizationurl);
+        }
+
+        public ActionResult getToken()
+        {
+
+            // get connection from session
+            AuthorizationCodeConnection connection = HttpContext.Session["AuthorizationCodeConnection"] as AuthorizationCodeConnection;
+
+            if (connection == null || ((AuthorizationCodeConfiguration)connection.connectionConfiguration).authorizationCode == null)
+            {
+                //is the connection available in session or is the 
+                // cached connection expired then lets re-authorize
+                return Authorize();
+            }
+
+            try
+            {
+                connection.connect();
+
+                // connection was successfull 
+                if (connection.isConnectedIndicator())
+                {
+                    // so get the worker like we wanted
+                    ViewBag.Message = "Successfully connected to ADP API";
+                }
+            }
+            catch (Exception e)
+            {
+                ViewBag.isError = true;
+                ViewBag.Message = e.Message;
+            }
+
+            return View("Index");
         }
 
         /// <summary>

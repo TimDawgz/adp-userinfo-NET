@@ -9,7 +9,6 @@ namespace UserInfoDemo.Controllers
         // GET: callback
         public RedirectResult Index()
         {
-
             string returncode = null;
             AuthorizationCodeConnection connection = null;
             string error = Request.QueryString["error"];
@@ -33,7 +32,6 @@ namespace UserInfoDemo.Controllers
                     Console.WriteLine(ViewBag.Message);
                 }
                 else {
-
                     // callback was successfull so get connection from session
                     connection = HttpContext.Session["AuthorizationCodeConnection"] as AuthorizationCodeConnection;
 
@@ -46,8 +44,6 @@ namespace UserInfoDemo.Controllers
                     else {
                         // update connection's authorization code
                         ((AuthorizationCodeConfiguration)connection.connectionConfiguration).authorizationCode = returncode;
-
-
                     }
                 }
 
