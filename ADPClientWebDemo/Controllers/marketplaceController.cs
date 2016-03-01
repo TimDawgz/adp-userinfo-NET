@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Web.Mvc;
 using ADPClient;
-using ADPClient.Product.dto;
 using ADPClient.Product;
+using ADPClient.Product.dto;
 
-namespace UserInfoDemo
+namespace UserInfoDemo.Controllers
 {
     public class marketplaceController : Controller
     {
@@ -27,13 +27,12 @@ namespace UserInfoDemo
             // get new connection configuration
             // JSON config object placed in Web.config configuration or
             // set individual config object attributes
-            String clientconfig = UserInfoDemo.Properties.Settings.Default.AuthorizationCodeConfiguration; //  AuthorizationCodeConfiguration;
+            String clientconfig = UserInfoDemo.Properties.Settings.Default.AuthorizationCodeConfiguration;
 
             if (String.IsNullOrEmpty(clientconfig))
             {
                 ViewBag.IsError = true;
                 ViewBag.Message = "Settings file or default options not available.";
-                Console.WriteLine(ViewBag.Message);
             }
             else {
                 // Initialize the Connection Configuration Object.
@@ -52,8 +51,6 @@ namespace UserInfoDemo
                     // browser so they can login
                     authorizationurl = connection.getAuthorizationURL();
 
-                    Console.WriteLine("Got auth URL... {0}... redirecting", authorizationurl);
-
                     // save connection for later use
                     HttpContext.Session["AuthorizationCodeConnection"] = connection;
                 }
@@ -61,8 +58,6 @@ namespace UserInfoDemo
                 {
                     ViewBag.isError = true;
                     ViewBag.Message = e.Message;
-                    Console.WriteLine(ViewBag.Message);
-                    return Redirect("marketplace");
                 }
             }
 
@@ -102,44 +97,42 @@ namespace UserInfoDemo
             return View("Index");
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <returns></returns>
         public ActionResult getUserInfo()
         {
-            UserInfo userinfo = null;
-
             // get connection from session
             AuthorizationCodeConnection connection = HttpContext.Session["AuthorizationCodeConnection"] as AuthorizationCodeConnection;
+            UserInfo user = null;
 
             if (connection == null || ((AuthorizationCodeConfiguration)connection.connectionConfiguration).authorizationCode == null)
             {
                 //is the connection available in session or is the 
                 // cached connection expired then lets re-authorize
-                return Authorize();
+                ViewBag.Message = "Not logged in or no connection available";
             }
-
-            try
-            {
-                connection.connect();
-
-                // connection was successfull 
-                if (connection.isConnectedIndicator())
+            else {
+                try
                 {
-                    // so get the worker like we wanted
-                    UserInfoHelper helper = new UserInfoHelper(connection, null);
-                    userinfo = helper.getUserInfo();
+                    connection.connect();
+
+                    // connection was successfull 
+                    if (connection.isConnectedIndicator())
+                    {
+                        ViewBag.Message = "Successfully connected to ADP API";
+                        
+                        // so get the worker like we wanted
+                        UserInfoHelper helper = new UserInfoHelper(connection);
+                        user = helper.getUserInfo();
+                    }
+                }
+                catch (Exception e)
+                {
+                    ViewBag.isError = true;
+                    ViewBag.Message = e.Message;
                 }
             }
-            catch (Exception e)
-            {
-                ViewBag.isError = true;
-                ViewBag.Message = e.Message;
-                Console.WriteLine(ViewBag.Message);
-            }
 
-            return View("Index", userinfo);
+            ViewBag.user = user;
+            return View("Index", user);
         }
 
         /// <summary>

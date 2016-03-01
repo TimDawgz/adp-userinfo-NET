@@ -1,14 +1,24 @@
 ﻿@using ADPClient;
+@model ADPClient.Product.dto.UserInfo
 @{
     ViewBag.Title = "Home Page";
     AuthorizationCodeConnection connection = (AuthorizationCodeConnection)Session["AuthorizationCodeConnection"];
     string authorizationcode = (connection == null) ? "" : ((AuthorizationCodeConfiguration)connection.connectionConfiguration).authorizationCode;
     ADPAccessToken token = ((connection == null) ? null : connection.accessToken);
-    var disabledgettoken = ((connection == null) ?  "disabled=disabled" : "");
-    var disabledgetdata = ((token == null) ?  "disabled=disabled" : "");
+    string disabledgettoken = ((connection == null) ? "disabled=disabled" : "");
+    string disabledgetdata = ((token == null) ? "disabled=disabled" : "");
 }
 
-
+<style>
+    dd {
+    display: inline-block;
+    -webkit-margin-start: 20px;
+}
+    dt {
+    display: inline-block;
+    -webkit-margin-start: 0px;
+}
+</style>
 
 @if (connection == null)
 {
@@ -16,19 +26,11 @@
 }
 else {
     <h4><a href="/marketplace/Logout">Logout</a></h4>
-}
     <p>
-        @if (!String.IsNullOrEmpty(authorizationcode)) {
-            <h5>Authentication code: @authorizationcode </h5>
-        }
+        <h5>Authentication code: @authorizationcode </h5>
 
-        @using (Html.BeginForm("getToken", "marketplace", FormMethod.Post, new { enctype = "multipart/form-data" }))
+        @if (token != null)
         {
-            <button @disabledgettoken type="submit" class="btn btn-primary" style="display:inline-block;">Get Token</button>@:&nbsp;&nbsp;&nbsp;
-        }
-
-        @if (token != null) { 
-            
             <h5>Token:</h5>
             <h5>
 <pre>
@@ -41,42 +43,65 @@ Token:
 </pre>
             </h5>
         }
-
-        @using (Html.BeginForm("getUserInfo", "marketplace", FormMethod.Post, new { enctype = "multipart/form-data" }))
-        {
-            <button @disabledgetdata type="submit" class="btn btn-primary" style="display:inline-block;">Get UserInfo</button>@:&nbsp;&nbsp;&nbsp;
-        }
-    </p>
-
-
-<!--
--->
-
-<table class="table table-bordered table-hover">
-    <thead>
-        <tr class="success">
-            <th>&nbsp;</th>
-        </tr>
-    </thead>
-
-    <tfoot>
-        @if (ViewBag.IsError == true)
-            {
-            <tr>
-                <td colspan="6">
-                    <div class="alert alert-danger" role="alert">An error occurred while retrieving data from the server. Please try again.<p>@ViewBag.Message</p></div>
-                </td>
-            </tr>
-        }
         else
         {
-            <tr>
-                <td colspan="6">
-                    <div class="alert alert-info" role="alert"><p>@ViewBag.Message</p></div>
-                </td>
-            </tr>
+            using (Html.BeginForm("getToken", "marketplace", FormMethod.Post, new { enctype = "multipart/form-data" }))
+            {
+                <button @disabledgettoken type="submit" class="btn btn-primary" style="display:inline-block;">Get Token</button>@:&nbsp;&nbsp;&nbsp;
+            }
         }
-    </tfoot>
+    </p>
+}
 
-    <tbody></tbody>
-</table>
+
+
+@using (Html.BeginForm("getUserInfo", "marketplace", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    <button @disabledgetdata type="submit" class="btn btn-primary" style="display:inline-block;">Get Data</button>@:&nbsp;&nbsp;&nbsp;
+}
+
+
+@if (Model != null)
+
+{
+    <article>
+        <code class="success">
+            <pre>
+            <b>Sub</b>              <dd>@Model.sub</dd>
+            <b>Organization OID</b> <dd>@Model.organizationOID</dd>
+            <b>Associate ID</b>     <dd>@Model.associateID</dd>
+            <b>Given Name</b>       <dd>@Model.givenName</dd>
+            <b>Family Name</b>      <dd>@Model.familyName</dd>
+            <b>Name</b>             <dd>@Model.name</dd>
+            <b>Email</b>            <dd>@Model.email</dd>
+            <b>Picture</b>          <dd>@Model.picture</dd>
+            </pre>
+        </code>
+    </article>
+}
+        <table class="table table-bordered table-hover">
+            <thead></thead>
+            <tbody>
+                <tr class="success">
+                    <td></td>
+                </tr>
+            </tbody>
+            <tfoot>
+                @if (ViewBag.IsError == true)
+                {
+                    <tr>
+                        <td colspan="6">
+                            <div class="alert alert-danger" role="alert">An error occurred while retrieving data from the server. Please try again.<p>@ViewBag.Message</p></div>
+                        </td>
+                    </tr>
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="6">
+                            <div class="alert alert-info" role="alert"><p>@ViewBag.Message</p></div>
+                        </td>
+                    </tr>
+                }
+            </tfoot>
+        </table>

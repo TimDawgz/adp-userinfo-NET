@@ -46,7 +46,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="adp-connection-NET, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\ADP-library-connection-NET.1.0\lib\net45\adp-connection-NET.dll</HintPath>
+      <HintPath>..\packages\ADP-library-connection-NET.1.00.1\lib\net45\adp-connection-NET.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
@@ -117,11 +117,8 @@
     <Content Include="Views\web.config" />
     <Content Include="packages.config" />
     <Content Include="Views\marketplace\Index.cshtml" />
-    <Content Include="Content\certs\ADP Internal Chain.pem" />
-    <Content Include="Content\certs\apiclient_iat.jks" />
     <Content Include="Content\certs\apiclient_iat.key" />
     <Content Include="Content\certs\apiclient_iat.pem" />
-    <Content Include="Content\certs\apiclient_iat.pfx" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
