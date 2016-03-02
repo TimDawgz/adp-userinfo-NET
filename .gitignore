@@ -229,6 +229,9 @@ FakesAssemblies/
 **/*.Server/ModelManifest.xml
 _Pvt_Extensions
 
+# OSX
+.DS_Store
+
 # Paket dependency manager
 .paket/paket.exe
 

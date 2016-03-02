@@ -64,19 +64,20 @@ Token:
 @if (Model != null)
 
 {
-    <article>
+    <article style="border: 1px ridge #ccc;">
         <code class="success">
             <pre>
             <b>Sub</b>              <dd>@Model.sub</dd>
             <b>Organization OID</b> <dd>@Model.organizationOID</dd>
-            <b>Associate ID</b>     <dd>@Model.associateID</dd>
+            <b>Associate ID</b>     <dd>@Model.associateOID</dd>
             <b>Given Name</b>       <dd>@Model.givenName</dd>
             <b>Family Name</b>      <dd>@Model.familyName</dd>
             <b>Name</b>             <dd>@Model.name</dd>
             <b>Email</b>            <dd>@Model.email</dd>
-            <b>Picture</b>          <dd>@Model.picture</dd>
             </pre>
         </code>
+
+        <!-- <b>Picture</b>          <dd>@Model.picture</dd> -->
     </article>
 }
         <table class="table table-bordered table-hover">

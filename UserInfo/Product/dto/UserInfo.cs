@@ -43,18 +43,18 @@ namespace ADPClient.Product.dto
         ///
         /// </summary>
         [DataMember]
-        public string associateID { get; set; }
+        public string associateOID { get; set; }
 
         /// <summary>
         ///
         /// </summary>
-        [DataMember]
+        [DataMember (Name = "given_name")]
         public string givenName { get; set; }
 
         /// <summary>
         ///
         /// </summary>
-        [DataMember]
+        [DataMember(Name = "family_name")]
         public string familyName { set; get; }
 
         /// <summary>
