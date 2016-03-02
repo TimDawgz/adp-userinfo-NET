@@ -2,10 +2,8 @@
 
 The ADP UserInfo Product Library can be used to obtain basic information about the user that is logging-in to the ADP application. The Library includes a sample application that can be run out-of-the-box to connect to the ADP Marketplace API **test** gateway. This library uses the latest version of the adp-connection library.
 
-There are two ways of installing and using this library:
+Clone the repo from Github: This allows you to access the raw source code of the library as well as provides the ability to run the sample application and view the Library documentation
 
-  - Clone the repo from Github: This allows you to access the raw source code of the library as well as provides the ability to run the sample application and view the Library documentation
-  - Search & Add the library as a NuGet library package to your Visual Studio solution. This is the recommended method when you are ready to develop amazing Apps for the ADP Marketplace store.
 
 ### Version
 (Beta) 1.0.0
@@ -18,12 +16,6 @@ You can either use the links on Github or the command line git instructions belo
 
 ```sh
 $ git clone https://github.com/adplabs/adp-userinfo-NET.git adp-userinfo-NET
-```
-
-followed by
-
-```sh
-
 $ cd adp-connection-NET
 
 open the solution in VisualStudio
