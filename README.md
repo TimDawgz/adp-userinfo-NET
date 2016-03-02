@@ -23,10 +23,14 @@ $ git clone https://github.com/adplabs/adp-userinfo-NET.git adp-userinfo-NET
 followed by
 
 ```sh
+
 $ cd adp-connection-NET
-$ nuget restore adp-userinfo-NET.sln
-$ devenv.exe adp-userinfo-NET /ReBuild
-$ devenv.exe /Run
+
+open the solution in VisualStudio
+    adp-userinfo-NET.sln
+    
+run the demo client project ADPClientWebDemo
+
 ```
 
 The build instruction should install the dependent packages from NuGet else get the packages from NuGet in the packages folder. If you run into errors you may need to open and run the solution in Visual Studio.
@@ -49,90 +53,48 @@ This starts an HTTP server on port 8889 (this port must be unused to run the sam
 ### Retrieve UserInfo using Authorization Code grant type
 
 ```c#
-using System;
-using System.Web.Mvc;
-using ADPClient;
-using ADPClient.Product;
-using ADPClient.Product.dto;
-
-namespace UserInfoDemo {
-    public class marketplaceController : Controller {
-        // GET: marketplace
-        public ActionResult Index() {
-            return View();
-        }
-        public ActionResult Authorize() {
+        public RedirectResult Authorize() {
             String authorizationurl = null;
             AuthorizationCodeConnection connection = null;
 
             // get new connection configuration
-            // JSON config object placed in Web.config configuration or
-            // set individual config object attributes
-            String clientconfig = UserInfoDemo.Properties.Settings.Default.AuthorizationCodeConfiguration; 
-            if (String.IsNullOrEmpty(clientconfig)) {
-                ViewBag.IsError = true;
-                ViewBag.Message = "Settings file or default options not available.";
-                Console.WriteLine(ViewBag.Message);
-            } else {
-                // Initialize the Connection Configuration Object.
-                // specifying the ConnectionConfiguration type will get back the right ConnectionConfiguration type object.
-                // AuthorizationCodeConfiguration object is returned
-                // JavaScriptSerializer oJS = new JavaScriptSerializer();
-                AuthorizationCodeConfiguration connectionCfg = JSONUtil.Deserialize<AuthorizationCodeConfiguration>(clientconfig);
+            String clientconfig = @"{
+                clientID:      ""88a73992-07f2-4714-ab4b-de782acd9c4d"",
+                clientSecret:  ""a130adb7-aa51-49ac-9d02-0d4036b63541"",
+                sslCertPath:   ""..\\..\\Content\\certs\\cert.pfx"",
+                tokenServerUR: ""https://iat-api.adp.com/auth/oauth/v2/token"",
+                grantType:     ""client_credentials""
+              }";
 
-                // create a new connection based on the connection configuration object provided
-                connection = (AuthorizationCodeConnection)ADPApiConnectionFactory.createConnection(connectionCfg);
-                try {
-                    // Authorization Code Apps require a user to login to ADP
-                    // So obtain the authorization URL to redirect the user's
-                    // browser so they can login
-                    authorizationurl = connection.getAuthorizationURL();
-                    Console.WriteLine("Got auth URL... {0}... redirecting", authorizationurl);
-                    // save connection for later use
-                    HttpContext.Session["AuthorizationCodeConnection"] = connection;
-                } catch (Exception e) {
-                    ViewBag.isError = true;
-                    ViewBag.Message = e.Message;
-                    Console.WriteLine(ViewBag.Message);
-                    return View("Index");
-                }
-            }
+            // [1] build configuratiuon object
+            AuthorizationCodeConfiguration connectionCfg = JSONUtil.Deserialize<AuthorizationCodeConfiguration>(clientconfig);
+
+            // [2] create a new connection based on the connection configuration object provided
+            connection = (AuthorizationCodeConnection)ADPApiConnectionFactory.createConnection(connectionCfg);
+
+            // [3] get authorization URL to redirect the user
+            authorizationurl = connection.getAuthorizationURL();
+
             return Redirect(authorizationurl);
         }
 
         public ActionResult getUserInfo() {
-            UserInfo userinfo = null;
-            // get connection from session
+            // [1] get connection from session
             AuthorizationCodeConnection connection = HttpContext.Session["AuthorizationCodeConnection"] as AuthorizationCodeConnection;
+            UserInfo user = null;   // user define product DTO class 
 
-            if (connection == null || ((AuthorizationCodeConfiguration)connection.connectionConfiguration).authorizationCode == null) {
-                //is the connection available in session or is the 
-                // cached connection expired then lets re-authorize
-                return Authorize();
-            }
-            try {
-                connection.connect();
-                // connection was successfull 
-                if (connection.isConnectedIndicator()) {
-                    // so get the worker like we wanted
-                    UserInfoHelper helper = new UserInfoHelper(connection, null);
-                    userinfo = helper.getUserInfo();
-                }
-            } catch (Exception e) {
-                ViewBag.isError = true;
-                ViewBag.Message = e.Message;
-                Console.WriteLine(ViewBag.Message);
-            }
-            return View("Index", userinfo);
-        }
+            connection.connect();
 
-        public ActionResult Logout() {
-            ViewBag.Message = "You're logged out.";
-            HttpContext.Session["AuthorizationCodeConnection"] = null;
-            return View("Index");
+            // connection was successfull 
+            if (connection.isConnectedIndicator()) {
+
+                // so get the worker like we wanted
+                UserInfoHelper helper = new UserInfoHelper(connection);
+                user = helper.getUserInfo();
+            }
+
+            return View("Index", user);
         }
-    }
-}
 ```
 
 ## API Documentation ##
