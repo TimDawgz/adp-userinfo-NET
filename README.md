@@ -8,7 +8,7 @@ There are two ways of installing and using this library:
   - Search & Add the library as a NuGet library package to your Visual Studio solution. This is the recommended method when you are ready to develop amazing Apps for the ADP Marketplace store.
 
 ### Version
-1.0.0
+(Beta) 1.0.0
 
 ### Installation
 
