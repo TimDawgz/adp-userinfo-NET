@@ -1,4 +1,4 @@
-# ADP UserInfo Product Library for c#/.NET (Beta)
+# ADP UserInfo Product Library for c#/.NET
 
 The ADP UserInfo Product Library can be used to obtain basic information about the user that is logging-in to the ADP application. The Library includes a sample application that can be run out-of-the-box to connect to the ADP Marketplace API **test** gateway. This library uses the latest version of the adp-connection library.
 
@@ -6,7 +6,7 @@ Clone the repo from Github: This allows you to access the raw source code of the
 
 
 ### Version
-(Beta) 1.0.0
+1.0.0
 
 ### Installation
 
