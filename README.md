@@ -6,7 +6,7 @@ Clone the repo from Github: This allows you to access the raw source code of the
 
 
 ### Version
-1.0.0
+1.0.1
 
 ### Installation
 
