@@ -1,3 +1,10 @@
+## ADP Marketplace Partners
+
+There are a few pre-requesites that you need to fullfill in order to use this library:
+- Replace the certifcates in this library with the ones you recieved from the [CSR Tool](https://apps.adp.com/apps/165104)
+- Update the client id and client secret with the ones supplied in your credentials document PDF
+- Update endpoints from ```https://iat-api.adp.com``` and ```https://iat-accounts.adp.com``` to  ```https://api.adp.com``` and ```https://accounts.adp.com```.
+
 # ADP UserInfo Product Library for c#/.NET
 
 The ADP UserInfo Product Library can be used to obtain basic information about the user that is logging-in to the ADP application. The Library includes a sample application that can be run out-of-the-box to connect to the ADP Marketplace API **test** gateway. This library uses the latest version of the adp-connection library.
@@ -20,14 +27,14 @@ $ cd adp-connection-NET
 
 open the solution in VisualStudio
     adp-userinfo-NET.sln
-    
+
 run the demo client project ADPClientWebDemo
 
 ```
 
 The build instruction should install the dependent packages from NuGet else get the packages from NuGet in the packages folder. If you run into errors you may need to open and run the solution in Visual Studio.
 
-##### Alternative: 
+##### Alternative:
 *Running the sample app*
 
 Load the solution in Visual Studio and Hit [Ctrl F5] (for Start without Debugging)
@@ -73,11 +80,11 @@ This starts an HTTP server on port 8889 (this port must be unused to run the sam
         public ActionResult getUserInfo() {
             // [1] get connection from session
             AuthorizationCodeConnection connection = HttpContext.Session["AuthorizationCodeConnection"] as AuthorizationCodeConnection;
-            UserInfo user = null;   // user define product DTO class 
+            UserInfo user = null;   // user define product DTO class
 
             connection.connect();
 
-            // connection was successfull 
+            // connection was successfull
             if (connection.isConnectedIndicator()) {
 
                 // so get the worker like we wanted
@@ -91,7 +98,7 @@ This starts an HTTP server on port 8889 (this port must be unused to run the sam
 
 ## API Documentation ##
 
-Documentation on the individual API calls provided by the library is automatically generated from the library code. 
+Documentation on the individual API calls provided by the library is automatically generated from the library code.
 
 ```
 Visual Studio build will generate the XML documentation
@@ -104,8 +111,8 @@ Nunit tests are available in Nunit test project found in the solution.
 
 Use Visual Studio code analysis feature to check the code coverage..
 
- 
- 
+
+
 ## Contributing ##
 
 To contribute to the library, please generate a pull request. Before generating the pull request, please insure the following:
@@ -114,7 +121,7 @@ To contribute to the library, please generate a pull request. Before generating 
 2. Code coverage on the unit tests must be no less than 95%.
 3. Your code updates have been fully tested and linted with no errors.
 4. Update README.md and API documentation as appropriate.
- 
+
 ## License ##
 
 This library is available under the Apache 2 license (http://www.apache.org/licenses/LICENSE-2.0).
